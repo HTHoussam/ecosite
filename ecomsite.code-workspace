@@ -1,0 +1,13 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.formatOnSave": true,
+        "prettier.semi": false,
+        "typescript.format.enable": true,
+        "editor.indentSize": "tabSize"
+    }
+}

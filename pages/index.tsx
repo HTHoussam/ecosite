@@ -1,5 +1,4 @@
 import { Inter } from '@next/font/google'
-import { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import ProductItem from '../components/ProductItem'
 import { titleToSlug } from '../utils/helpers'
@@ -45,9 +44,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 		}
 	} catch (error) {
 		return {
-			props: {
-				productsData: [],
-			}, // will be passed to the page component as props
+			redirect: {
+				destination: '/404',
+				permanent: false,
+			},
 		}
 	}
 }

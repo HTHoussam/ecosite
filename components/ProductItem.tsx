@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import router from 'next/router'
 import { useContext } from 'react'
 import { Product } from '../pages/types/types'
 import { titleToSlug } from '../utils/helpers'
@@ -16,7 +15,7 @@ const ProductItem = ({ product }: { product: Product }) => {
 			return alert('out of stock, Sorry!')
 		}
 		dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
-		router.push('/cart')
+		// router.push('/cart')
 	}
 	return (
 		<div className='card'>

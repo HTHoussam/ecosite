@@ -3,9 +3,22 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Layout from '../../components/Layout'
 import { Product } from '../types/types'
+import { useContext } from 'react'
+import { Store } from '../../utils/store'
 //
 
 const ProductPage = ({ data }: { data: Product }) => {
+	const { state, dispatch } = useContext(Store)
+	const addToCartHandler = () => {
+		const existItem = state.cart.cartItems.find(
+			(x: Product) => x.id === data.id
+		)
+		const quantity = existItem ? existItem.quantity + 1 : 1
+		if (data.stock < quantity) {
+			return alert('out of stock, Sorry!')
+		}
+		dispatch({ type: 'CART_ADD_ITEM', payload: { ...data, quantity } })
+	}
 	return (
 		<Layout title={`${data.title}`}>
 			<div className='py-2'>
@@ -40,7 +53,10 @@ const ProductPage = ({ data }: { data: Product }) => {
 								<div>Status</div>
 								<div>{data.stock > 0 ? 'In stock' : 'Unavalaible'}</div>
 							</div>
-							<button type='button' className='primary-button w-full'>
+							<button
+								type='button'
+								className='primary-button w-full'
+								onClick={addToCartHandler}>
 								Add to cart
 							</button>
 						</div>

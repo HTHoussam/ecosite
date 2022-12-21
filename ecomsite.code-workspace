@@ -1,13 +1,17 @@
 {
-    "folders": [
-        {
-            "path": "."
-        }
-    ],
-    "settings": {
-        "editor.formatOnSave": true,
-        "prettier.semi": false,
-        "typescript.format.enable": true,
-        "editor.indentSize": "tabSize"
-    }
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"prettier.semi": false,
+		"typescript.format.enable": true,
+		"editor.indentSize": "tabSize",
+		"typescript.updateImportsOnFileMove.enabled": "always",
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": true
+		}
+	}
 }

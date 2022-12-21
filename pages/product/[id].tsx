@@ -5,10 +5,12 @@ import Layout from '../../components/Layout'
 import { Product } from '../types/types'
 import { useContext } from 'react'
 import { Store } from '../../utils/store'
+import { useRouter } from 'next/router'
 //
 
 const ProductPage = ({ data }: { data: Product }) => {
 	const { state, dispatch } = useContext(Store)
+	const router = useRouter()
 	const addToCartHandler = () => {
 		const existItem = state.cart.cartItems.find(
 			(x: Product) => x.id === data.id
@@ -18,6 +20,7 @@ const ProductPage = ({ data }: { data: Product }) => {
 			return alert('out of stock, Sorry!')
 		}
 		dispatch({ type: 'CART_ADD_ITEM', payload: { ...data, quantity } })
+		router.push('/cart')
 	}
 	return (
 		<Layout title={`${data.title}`}>

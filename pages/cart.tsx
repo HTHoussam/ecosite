@@ -7,7 +7,7 @@ import CartTotal from '../components/pages/cart/CartTotal'
 import { Store } from '../utils/store'
 
 const CartPage = () => {
-	const { state, dispatch } = useContext(Store)
+	const { state } = useContext(Store)
 	const {
 		cart: { cartItems },
 	} = state
@@ -23,7 +23,6 @@ const CartPage = () => {
 					<div className='grid md:grid-cols-4 md:gap-5'>
 						<div className='overflow-x-auto md:col-span-3'>
 							<CartTable cartItems={cartItems} />
-							{/* here table */}
 						</div>
 						<CartTotal cartItems={cartItems} />
 					</div>

@@ -1,9 +1,9 @@
 import { Inter } from '@next/font/google'
+import { GetServerSideProps } from 'next'
 import Layout from '../components/Layout'
 import ProductItem from '../components/ProductItem'
+import { ProductApiData } from '../types/types'
 import { titleToSlug } from '../utils/helpers'
-import { ProductApiData } from './types/types'
-import { GetServerSideProps } from 'next'
 
 const inter = Inter({ subsets: ['latin'] })
 

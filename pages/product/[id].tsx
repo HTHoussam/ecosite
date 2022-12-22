@@ -1,11 +1,11 @@
 import { GetServerSideProps } from 'next'
-import Link from 'next/link'
 import Image from 'next/image'
-import Layout from '../../components/Layout'
-import { Product } from '../types/types'
-import { useContext } from 'react'
-import { Store } from '../../utils/store'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useContext } from 'react'
+import Layout from '../../components/Layout'
+import { Product } from '../../types/types'
+import { Store } from '../../utils/store'
 //
 
 const ProductPage = ({ data }: { data: Product }) => {

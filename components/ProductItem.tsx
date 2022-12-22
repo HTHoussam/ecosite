@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { useContext } from 'react'
-import { Product } from '../pages/types/types'
+import { Product } from '../types/types'
 import { titleToSlug } from '../utils/helpers'
 import { Store } from '../utils/store'
 

@@ -1,14 +1,12 @@
-import Link from 'next/link'
-import React, { useContext } from 'react'
-import Image from 'next/image'
 import { XCircleIcon } from '@heroicons/react/24/outline'
-import { Product } from '../../../pages/types/types'
+import Image from 'next/image'
+import Link from 'next/link'
+import { useContext } from 'react'
+import { Product } from '../../../types/types'
 import { Store } from '../../../utils/store'
-import { useRouter } from 'next/router'
 
 const CartTable = ({ cartItems }: { cartItems: Product[] }) => {
-	const { state, dispatch } = useContext(Store)
-	const router = useRouter()
+	const { dispatch } = useContext(Store)
 	const removeItemHandler = (item: Product) => {
 		dispatch({ type: 'CART_REMOVE_ITEM', payload: item })
 	}

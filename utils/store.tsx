@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { createContext, useReducer } from 'react'
-import { Product } from '../pages/types/types'
+import { Product } from '../types/types'
 
 const initialState = {
 	cart: Cookies.get('cart')

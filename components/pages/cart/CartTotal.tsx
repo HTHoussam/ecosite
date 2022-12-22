@@ -1,6 +1,5 @@
 import router from 'next/router'
-import React from 'react'
-import { Product } from '../../../pages/types/types'
+import { Product } from '../../../types/types'
 
 const CartTotal = ({ cartItems }: { cartItems: Product[] }) => {
 	return (
@@ -20,7 +19,7 @@ const CartTotal = ({ cartItems }: { cartItems: Product[] }) => {
 				<li>
 					<button
 						className='primary-button w-full'
-						onClick={() => router.push('/shipping')}>
+						onClick={() => router.push('login?redirect=/shipping')}>
 						Check Out
 					</button>
 				</li>

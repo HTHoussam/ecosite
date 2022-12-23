@@ -1,11 +1,13 @@
 /* eslint-disable no-undef */
-import { useSession } from 'next-auth/react'
+import Cookies from 'js-cookie'
+import { signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useContext, useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Store } from '../utils/store'
+import UserMenu, { MenuItem } from './core/UserMenu'
 
 const Layout = ({
 	title,
@@ -14,7 +16,7 @@ const Layout = ({
 	title?: string
 	children: JSX.Element
 }) => {
-	const { state } = useContext(Store)
+	const { state, dispatch } = useContext(Store)
 	const { status, data: session } = useSession()
 	const { cart } = state
 	const [cartItemsCount, setCartItemsCount] = useState(0)
@@ -23,6 +25,24 @@ const Layout = ({
 			cart.cartItems.reduce((a: any, c: { quantity: any }) => a + c.quantity, 0)
 		)
 	}, [cart.cartItems])
+	const userMenuItems: MenuItem[] = [
+		{
+			label: 'profile',
+			href: '/profile',
+			className: 'dropdown-link',
+		},
+		{ label: 'order history', href: '/', className: 'dropdown-link' },
+		{
+			label: 'signout',
+			href: '',
+			className: 'dropdown-link',
+			callbackFn: () => {
+				Cookies.remove('cart')
+				dispatch({ type: 'CART_RESET' })
+				signOut({ callbackUrl: '/login' })
+			},
+		},
+	]
 	return (
 		<>
 			<Head>
@@ -47,11 +67,13 @@ const Layout = ({
 									</span>
 								)}
 							</Link>
-
 							{status === 'loading' ? (
 								'Loading'
 							) : session?.user ? (
-								session.user.name
+								<UserMenu
+									buttonLabel={session.user.name}
+									menuItems={userMenuItems}
+								/>
 							) : (
 								<Link href={'/login'}>Login</Link>
 							)}

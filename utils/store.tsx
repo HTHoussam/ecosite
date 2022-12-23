@@ -5,11 +5,11 @@ import { Product } from '../types/types'
 const initialState = {
 	cart: Cookies.get('cart')
 		? JSON.parse(Cookies.get('cart') ?? '')
-		: { cartItems: [] },
-}
+		: { cartItems: [], shippingAddress: {} },
+} 
 export const Store = createContext<any>({})
 const reducer = (
-	state: { cart: { cartItems: Product[] } },
+	state: { cart: { cartItems: Product[]; shippingAddress: Object } },
 	action: { type: string; payload: any }
 ) => {
 	switch (action.type) {
@@ -40,6 +40,18 @@ const reducer = (
 					cartItems: [],
 					shippingAddress: { location: {} },
 					paymentMethod: '',
+				},
+			}
+		}
+		case 'SAVE_SHIPPING_ADDRESS': {
+			return {
+				...state,
+				cart: {
+					...state.cart,
+					shippingAddress: {
+						...state.cart.shippingAddress,
+						...action.payload,
+					},
 				},
 			}
 		}

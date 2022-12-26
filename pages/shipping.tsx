@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import Link from 'next/link'
 import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Layout from '../components/Layout'
@@ -129,7 +130,9 @@ const ShippingPage = () => {
 						/>
 					))}
 					<div className='mb-4 flex justify-between'>
-						<button className='primary-button'>Checkout</button>
+						<Link href={'/payment'}>
+							<button className='primary-button'>Checkout</button>
+						</Link>
 					</div>
 				</form>
 			</>

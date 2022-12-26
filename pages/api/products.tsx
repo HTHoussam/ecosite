@@ -1,14 +1,15 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextApiRequest, NextApiResponse } from 'next';
 
 export const getProducts = async (
-    request: NextApiRequest,
-    response: NextApiResponse
+	req: NextApiRequest,
+	res: NextApiResponse
 ) => {
-    try {
-        const response = await fetch('https://dummyjson.com/products')
-        return response
-    } catch (error) {
-        console.log('error', error)
-        return error
-    }
-}
+	try {
+		const result = await fetch('https://dummyjson.com/products');
+		return res.send({ result });
+	} catch (error: any) {
+		console.log('error', error);
+		res.send({ error: error.message });
+		return error;
+	}
+};

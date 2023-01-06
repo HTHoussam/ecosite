@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import mongoose, { LeanDocument } from 'mongoose'
 const connection: {
 	isConnected: boolean | number
 } = {
@@ -32,5 +32,11 @@ async function disconnect() {
 		}
 	}
 }
-const db = { connect, disconnect }
+const convertDocToObj = (doc: LeanDocument<any>) => {
+	doc._id = doc._id.toString()
+	doc.createdAt = doc.createdAt.toString()
+	doc.updatedAt = doc.updatedAt.toString()
+	return doc
+}
+const db = { connect, disconnect, convertDocToObj }
 export default db

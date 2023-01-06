@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { createContext, useReducer } from 'react'
-import { Product } from '../types/types'
+import { ProductType } from '../types/types'
 
 const initialState = {
 	cart: Cookies.get('cart')
@@ -11,7 +11,7 @@ export const Store = createContext<any>({})
 const reducer = (
 	state: {
 		cart: {
-			cartItems: Product[]
+			cartItems: ProductType[]
 			shippingAddress: Object
 			paymentMethod: string
 		}
@@ -22,11 +22,11 @@ const reducer = (
 		case 'CART_ADD_ITEM': {
 			const newItem = action.payload
 			const existItem = state.cart.cartItems.find(
-				(item: { id: any }) => item.id === newItem.id
+				(item: ProductType) => item._id === newItem._id
 			)
 			const cartItems = existItem
-				? state.cart.cartItems.map((item: { title: any }) =>
-						item.title === existItem.title ? newItem : item
+				? state.cart.cartItems.map((item: ProductType) =>
+						item.name === existItem.name ? newItem : item
 				  )
 				: [...state.cart.cartItems, newItem]
 			Cookies.set('cart', JSON.stringify({ ...state.cart, cartItems }))
@@ -34,7 +34,7 @@ const reducer = (
 		}
 		case 'CART_REMOVE_ITEM': {
 			const cartItems = state.cart.cartItems.filter(
-				(item) => item.id !== action.payload.id
+				(item) => item._id !== action.payload._id
 			)
 			Cookies.set('cart', JSON.stringify({ ...state.cart, cartItems }))
 			return { ...state, cart: { ...state.cart, cartItems } }

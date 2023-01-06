@@ -1,60 +1,76 @@
+import axios from 'axios'
 import { GetServerSideProps } from 'next'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useContext } from 'react'
+import { toast } from 'react-toastify'
 import Layout from '../../components/Layout'
-import { Product } from '../../types/types'
+import Product from '../../models/Product'
+import { ProductType } from '../../types/types'
+import db from '../../utils/db'
 import { Store } from '../../utils/store'
 //
 
-const ProductPage = ({ data }: { data: Product }) => {
+const ProductPage = ({ product }: { product: ProductType }) => {
 	const { state, dispatch } = useContext(Store)
 	const router = useRouter()
-	const addToCartHandler = () => {
+	const addToCartHandler = async () => {
 		const existItem = state.cart.cartItems.find(
-			(x: Product) => x.id === data.id
+			(x: ProductType) => x.slug === product.slug
 		)
 		const quantity = existItem ? existItem.quantity + 1 : 1
-		if (data.stock < quantity) {
-			return alert('out of stock, Sorry!')
+		const { data } = await axios.get<ProductType>(
+			`/api/products/${product._id}`
+		)
+		if (data.countInStock < quantity) {
+			return toast.error('out of stock, Sorry!', { toastId: 'outOfStockError' })
 		}
-		dispatch({ type: 'CART_ADD_ITEM', payload: { ...data, quantity } })
+		dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
 		router.push('/cart')
 	}
+	if (!product) {
+		return (
+			<Layout title='Product not found'>
+				<div>Product not found</div>
+			</Layout>
+		)
+	}
 	return (
-		<Layout title={`${data.title}`}>
+		<Layout title={`${product.name}`}>
 			<div className='py-2'>
 				<Link href='/'>back to products</Link>
 
 				<div className='grid md:grid-cols-4 md:gap-3'>
 					<div className='md:col-span-2'>
 						<Image
-							src={data.images[0]}
-							alt={data.title}
+							src={product.image}
+							alt={product.slug}
 							height={'640'}
 							width={'640'}></Image>
 					</div>
 					<div>
 						<ul>
 							<li>
-								<h1 className='text-lg'>{data.title}</h1>
+								<h1 className='text-lg'>{product.name}</h1>
 							</li>
-							<li>Category: {data.category}</li>
-							<li>Brand: {data.brand}</li>
-							<li>{data.rating} - rated</li>
-							<li>Description: {data.description}</li>
+							<li>Category: {product.category}</li>
+							<li>Brand: {product.brand}</li>
+							<li>{product.rating} - rated</li>
+							<li>Description: {product.description}</li>
 						</ul>
 					</div>
 					<div>
 						<div className='card p-5'>
 							<div className='mb-2 flex justify-between'>
 								<div>Price</div>
-								<div>${data.price}</div>
+								<div>${product.price}</div>
 							</div>
 							<div className='mb-2 flex justify-between'>
 								<div>Status</div>
-								<div>{data.stock > 0 ? 'In stock' : 'Unavalaible'}</div>
+								<div>
+									{product.countInStock > 0 ? 'In stock' : 'Unavalaible'}
+								</div>
 							</div>
 							<button
 								type='button'
@@ -71,21 +87,17 @@ const ProductPage = ({ data }: { data: Product }) => {
 }
 export default ProductPage
 
-export const getServerSideProps: GetServerSideProps<{ data: Product }> = async (
-	context
-) => {
+export const getServerSideProps: GetServerSideProps<{
+	data: ProductType
+}> = async (context) => {
 	const { params } = context
-	const id = params ? params.id : -1
-	const fetchData: () => Promise<Product> = async () => {
-		const data = await fetch(`https://dummyjson.com/products/${id}`)
-		const json: Product = await data.json()
-		return json
-	}
+	const { slug } = params ?? { slug: '' }
+	await db.connect()
+	const product = await Product.findOne({ slug }).lean()
 	try {
-		const productsData = await fetchData()
 		return {
 			props: {
-				data: productsData,
+				data: product,
 			}, // will be passed to the page component as props
 		}
 	} catch (error) {

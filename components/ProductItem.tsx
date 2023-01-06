@@ -1,35 +1,35 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from 'next/link'
 import { useContext } from 'react'
-import { Product } from '../types/types'
-import { titleToSlug } from '../utils/helpers'
+import { toast } from 'react-toastify'
+import { ProductType } from '../types/types'
 import { Store } from '../utils/store'
 
-const ProductItem = ({ product }: { product: Product }) => {
+const ProductItem = ({ product }: { product: ProductType }) => {
 	const { state, dispatch } = useContext(Store)
 	const addToCartHandler = () => {
 		const existItem = state.cart.cartItems.find(
-			(x: Product) => x.id === product.id
+			(x: ProductType) => x._id === product._id
 		)
 		const quantity = existItem ? existItem.quantity + 1 : 1
-		if (product.stock < quantity) {
-			return alert('out of stock, Sorry!')
+		if (product.countInStock < quantity) {
+			return toast.warning('out of stock, Sorry!', { toastId: 'outOfStock' })
 		}
 		dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } })
-		// router.push('/cart')
+		toast.success('Product added successfully', { toastId: 'successAlert' })
 	}
 	return (
 		<div className='card'>
-			<Link href={`/product/${product.id}`}>
+			<Link href={`/product/${product.slug}`}>
 				<img
-					src={product.images[0]}
-					alt={product.title}
+					src={product.image}
+					alt={product.name}
 					className='w-full h-2/3 rounded shadow'
 				/>
 			</Link>
 			<div className='flex flex-col items-center justify-center p-5'>
-				<Link href={`/product/${titleToSlug(product.title)}`}>
-					<h2></h2>
+				<Link href={`/product/${product.slug}`}>
+					<h2>{product.name}</h2>
 				</Link>
 				<p className='mb-2'>{product.brand}</p>
 				<p>${product.price}</p>

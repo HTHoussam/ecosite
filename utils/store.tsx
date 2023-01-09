@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie'
 import { createContext, useReducer } from 'react'
-import { ProductType } from '../types/types'
+import { ProductType, ShippingAddressType } from '../types/types'
 
 const initialState = {
 	cart: Cookies.get('cart')
@@ -12,7 +12,7 @@ const reducer = (
 	state: {
 		cart: {
 			cartItems: ProductType[]
-			shippingAddress: Object
+			shippingAddress: ShippingAddressType
 			paymentMethod: string
 		}
 	},
@@ -57,6 +57,18 @@ const reducer = (
 					shippingAddress: {
 						...state.cart.shippingAddress,
 						...action.payload,
+					},
+				},
+			}
+		}
+		case 'CART_CLEAR_ITEMS': {
+			return {
+				...state,
+				cart: {
+					...state.cart,
+					cartItems: [],
+					shippingAddress: {
+						...state.cart.shippingAddress,
 					},
 				},
 			}

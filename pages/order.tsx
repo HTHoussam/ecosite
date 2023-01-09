@@ -16,7 +16,6 @@ const PlaceOrderPage = () => {
 	const { state, dispatch } = useContext(Store)
 	const { cart } = state
 	const { cartItems, shippingAddress, paymentMethod } = cart
-	console.log('WHOLE CART,', cart)
 	const round2 = (num: number) => Math.round(num * 100 + Number.EPSILON) / 100
 	const itemsPrice = round2(
 		cartItems.reduce((p: number, c: ProductType) => p + c.quantity * c.price, 0)
@@ -49,6 +48,14 @@ const PlaceOrderPage = () => {
 				totalPrice,
 				itemsPrice,
 			})
+			if (!data) {
+				toast.error(
+					<div>
+						Order failed go back to previous step
+						<Link href={'/payment'}> here</Link>
+					</div>
+				)
+			}
 			setLoading(false)
 			dispatch({ type: 'CART_CLEAR_ITEMS' })
 			Cookies.set(
@@ -58,8 +65,7 @@ const PlaceOrderPage = () => {
 					cartItems: [],
 				})
 			)
-			console.log(data)
-			// router.push(`order/${data._id}`)
+			router.push(`order/${data._id}`)
 		} catch (error) {
 			setLoading(false)
 			toast.error(getError(error))

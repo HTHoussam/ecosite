@@ -1,5 +1,5 @@
 import { UseFormRegister } from 'react-hook-form'
-import { ShippingFormValues } from '../../../pages/shipping'
+import { ShippingAddressType } from '../../../types/types'
 import ErrorSpan from '../../core/ErrorSpan'
 
 const ShippingInput = ({
@@ -10,7 +10,7 @@ const ShippingInput = ({
 }: {
 	label: string
 	inputId: string
-	inputRegisterCallBack: UseFormRegister<ShippingFormValues>
+	inputRegisterCallBack: UseFormRegister<ShippingAddressType>
 	inputError: any
 }) => {
 	return (
@@ -21,6 +21,7 @@ const ShippingInput = ({
 			<input
 				className='w-full'
 				id={inputId}
+				name={inputId}
 				{...inputRegisterCallBack}
 				autoFocus
 			/>

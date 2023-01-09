@@ -14,11 +14,11 @@ const PaymentPage = () => {
 	const { shippingAddress, paymentMethod } = cart
 	useEffect(() => {
 		if (!shippingAddress.address) {
-			router.push('/shipping')
+			// router.push('/shipping')
 			return
 		}
 		setSelectedPaymentMethod(paymentMethod || '')
-	}, [paymentMethod, router, shippingAddress.address])
+	}, [paymentMethod, router, shippingAddress])
 	return (
 		<Layout>
 			<>
@@ -67,7 +67,9 @@ const PaymentPage = () => {
 							className='default-button'>
 							back
 						</button>
-						<button className='primary-button' onClick={() => router.push('/')}>
+						<button
+							className='primary-button'
+							onClick={() => router.push('/order')}>
 							Next
 						</button>
 					</div>
@@ -77,4 +79,5 @@ const PaymentPage = () => {
 	)
 }
 
+PaymentPage.auth = true
 export default PaymentPage

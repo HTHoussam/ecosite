@@ -1,19 +1,14 @@
 import Cookies from 'js-cookie'
-import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useContext, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Layout from '../components/Layout'
 import CheckoutWizard from '../components/pages/shipping/CheckoutWizard'
 import ShippingInput from '../components/pages/shipping/ShippingInput'
+import { ShippingAddressType } from '../types/types'
 import { Store } from '../utils/store'
-export type ShippingFormValues = {
-	fullName: string
-	address: string
-	city: string
-	postalCode: string
-	country: string
-}
 const ShippingPage = () => {
+	const router = useRouter()
 	const { state, dispatch } = useContext(Store)
 	const { cart } = state
 	const { shippingAddress } = cart
@@ -22,7 +17,7 @@ const ShippingPage = () => {
 		register,
 		setValue,
 		formState: { errors },
-	} = useForm<ShippingFormValues>()
+	} = useForm<ShippingAddressType>()
 	useEffect(() => {
 		setValue('fullName', shippingAddress.fullName)
 		setValue('address', shippingAddress.address)
@@ -30,7 +25,6 @@ const ShippingPage = () => {
 		setValue('country', shippingAddress.country)
 		setValue('postalCode', shippingAddress.postalCode)
 	}, [setValue, shippingAddress])
-
 	const shippingInputs: Array<{
 		label: string
 		id: string
@@ -85,22 +79,11 @@ const ShippingPage = () => {
 		city,
 		postalCode,
 		country,
-	}: ShippingFormValues) => {
-		dispatch({
-			type: 'SAVE_SHIPPING_ADDRESS',
-			payload: {
-				fullName,
-				address,
-				city,
-				postalCode,
-				country,
-			},
-		})
-		Cookies.set(
-			'cart',
-			JSON.stringify({
-				...cart,
-				shippingAddress: {
+	}: ShippingAddressType) => {
+		try {
+			dispatch({
+				type: 'SAVE_SHIPPING_ADDRESS',
+				payload: {
 					fullName,
 					address,
 					city,
@@ -108,14 +91,28 @@ const ShippingPage = () => {
 					country,
 				},
 			})
-		)
+			Cookies.set(
+				'cart',
+				JSON.stringify({
+					...cart,
+					shippingAddress: {
+						fullName,
+						address,
+						city,
+						postalCode,
+						country,
+					},
+				})
+			)
+		} catch (error) {
+			console.log(error)
+		}
 	}
 	return (
 		<Layout title='Shipping Page'>
 			<>
 				<CheckoutWizard activeStep={1} />
 				<form
-					action=''
 					className='mx-auto max-w-screen-md'
 					onSubmit={handleSubmit(shippingSubmitHandler)}>
 					<h1 className='mb-4 text-xl'>Shipping Address</h1>
@@ -130,14 +127,19 @@ const ShippingPage = () => {
 						/>
 					))}
 					<div className='mb-4 flex justify-between'>
-						<Link href={'/payment'}>
-							<button className='primary-button'>Checkout</button>
-						</Link>
+						<button
+							className='primary-button'
+							onClick={() => {
+								router.push('/payment')
+							}}>
+							Checkout
+						</button>
 					</div>
 				</form>
 			</>
 		</Layout>
 	)
 }
-export default ShippingPage
+
 ShippingPage.auth = true
+export default ShippingPage

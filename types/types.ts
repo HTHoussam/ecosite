@@ -12,3 +12,31 @@ export type ProductType = {
 	countInStock: number
 	description: string
 }
+interface OrderedItems {
+	name: string
+	quantity: number
+	image: string
+	price: number
+}
+export interface ShippingAddressType {
+	fullName: string
+	address: string
+	city: string
+	postalCode: string
+	country: string
+}
+export type OrderType = {
+	_id: number
+	user: number
+	orderItems: Array<OrderedItems>
+	shippingAddress: ShippingAddressType
+	paymentMethod: string
+	itemsPrice: number
+	shippingPrice: number
+	taxPrice: number
+	totalPrice: number
+	isPaid: boolean
+	isDelivered: boolean
+	paidAt: string
+	deliveredAt: string
+}

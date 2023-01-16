@@ -22,7 +22,7 @@ export interface ShippingAddressType {
 	fullName: string
 	address: string
 	city: string
-	postalCode: string
+	postalCode: number
 	country: string
 }
 export type OrderType = {

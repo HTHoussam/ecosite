@@ -14,7 +14,7 @@ const LoginPage = () => {
 	}, [redirect, router, session?.user])
 	return (
 		<Layout title='login form'>
-			<LoginForm />
+			<LoginForm redirect={redirect} />
 		</Layout>
 	)
 }

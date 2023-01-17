@@ -39,7 +39,7 @@ const PlaceOrderPage = () => {
 	const placeOrderHandler = async () => {
 		try {
 			setLoading(true)
-			const { data } = await axios.post<OrderType>('api/orders', {
+			const { data } = await axios.post<OrderType>('api/orders/', {
 				orderItems: cartItems,
 				shippingAddress,
 				paymentMethod,

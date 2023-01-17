@@ -31,6 +31,7 @@ export type OrderType = {
 	orderItems: Array<OrderedItems>
 	shippingAddress: ShippingAddressType
 	paymentMethod: string
+	paymentResult: { id: String; status: String; email_address: String }
 	itemsPrice: number
 	shippingPrice: number
 	taxPrice: number

@@ -1,54 +1,28 @@
-import axios, { AxiosError } from 'axios'
+import { PayPalButtons } from '@paypal/react-paypal-js'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useReducer } from 'react'
 import Layout from '../../components/Layout'
 import OrderSummaryItem from '../../components/pages/order/OrderSummaryItem'
-import { OrderType, ProductType } from '../../types/types'
-import { getError } from '../../utils/helpers'
+import useOrderPayPal from '../../hooks/useOrderPayPal'
+import { ProductType } from '../../types/types'
 
-const reducer = (
-	state: any,
-	action: { type: string; payload?: OrderType | AxiosError }
-) => {
-	switch (action.type) {
-		case 'FETCH_REQUEST':
-			return { ...state, loading: true, error: '' }
-		case 'FETCH_SUCCESS':
-			return { ...state, loading: false, order: action.payload, error: '' }
-		case 'FETCH_FAIL':
-			return { ...state, loading: false, error: action.payload }
-		default:
-			return state
-	}
-}
 const OrderScreen = () => {
-	const { query } = useRouter()
-	const orderId = query.id
-	const [{ loading, error, order }, dispatch] = useReducer(reducer, {
-		loading: true,
-		order: {},
-		error: '',
-	})
-	useEffect(() => {
-		if (!orderId) {
-			return
-		}
-		const fetchOrder = async () => {
-			try {
-				dispatch({
-					type: 'FETCH_REQUEST',
-				})
-				const { data } = await axios.get<OrderType>(`/api/orders/${orderId}`)
-				dispatch({ type: 'FETCH_SUCCESS', payload: data })
-			} catch (error: any) {
-				console.log('ERROr on fetch', error)
-				dispatch({ type: 'FETCH_FAIL', payload: getError(error) })
-			}
-		}
-		fetchOrder()
-	}, [orderId])
+	const router = useRouter()
+	const { id } = router.query
+	const orderId = id
+	const [
+		{
+			createOrder,
+			onApprove,
+			onError,
+			isPending,
+			loading,
+			error,
+			order,
+			loadingPay,
+		},
+	] = useOrderPayPal()
 	const {
 		shippingAddress,
 		paymentMethod,
@@ -146,6 +120,22 @@ const OrderScreen = () => {
 										<OrderSummaryItem key={key} label={key} value={value} />
 									)
 								})}
+								{!isPaid && (
+									<li>
+										{isPending ? (
+											<div>LOADING ...</div>
+										) : (
+											<div>
+												<PayPalButtons
+													className='mt-4 w-100'
+													createOrder={createOrder}
+													onApprove={onApprove}
+													onError={onError}></PayPalButtons>
+											</div>
+										)}
+										{loadingPay && <div>Loading ...</div>}
+									</li>
+								)}
 							</div>
 						</div>
 					</div>

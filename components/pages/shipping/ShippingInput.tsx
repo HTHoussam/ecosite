@@ -5,11 +5,13 @@ import ErrorSpan from '../../core/ErrorSpan'
 const ShippingInput = ({
 	label,
 	inputId,
+	type = 'text',
 	inputRegisterCallBack,
 	inputError,
 }: {
 	label: string
 	inputId: string
+	type?: string
 	inputRegisterCallBack: UseFormRegister<ShippingAddressType>
 	inputError: any
 }) => {
@@ -19,13 +21,15 @@ const ShippingInput = ({
 				{label}
 			</label>
 			<input
+				type={type}
 				className='w-full'
 				id={inputId}
 				name={inputId}
 				{...inputRegisterCallBack}
-				autoFocus
 			/>
-			{inputError && <ErrorSpan message={inputError.message} />}
+			{inputError && (
+				<ErrorSpan message={inputError.message ?? 'error on input'} />
+			)}
 		</div>
 	)
 }

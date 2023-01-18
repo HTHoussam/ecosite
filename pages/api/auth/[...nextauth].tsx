@@ -13,8 +13,8 @@ export default NextAuth({
 	},
 	callbacks: {
 		async jwt({ token, user }) {
-			if (user?.id) token.id = user.id
-			if (user?.isAdmin) token.isAdmin = user.isAdmin
+			if (user && user.id) token.id = user.id
+			if (user && user.isAdmin) token.isAdmin = user.isAdmin
 			return token
 		},
 		// @ts-ignore

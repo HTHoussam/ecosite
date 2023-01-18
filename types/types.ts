@@ -26,7 +26,7 @@ export interface ShippingAddressType {
 	country: string
 }
 export type OrderType = {
-	_id: number
+	_id: string
 	user: number
 	orderItems: Array<OrderedItems>
 	shippingAddress: ShippingAddressType
@@ -40,4 +40,6 @@ export type OrderType = {
 	isDelivered: boolean
 	paidAt: string
 	deliveredAt: string
+	createdAt: string
+	updatedAt: string
 }

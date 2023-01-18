@@ -31,7 +31,11 @@ const Layout = ({
 			href: '/profile',
 			className: 'dropdown-link',
 		},
-		{ label: 'order history', href: '/', className: 'dropdown-link' },
+		{
+			label: 'order history',
+			href: '/order-history',
+			className: 'dropdown-link',
+		},
 		{
 			label: 'signout',
 			href: '',

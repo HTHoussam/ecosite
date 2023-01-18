@@ -1,6 +1,5 @@
 import bcryptjs from 'bcrypt'
-import { JWT, Session } from 'next-auth'
-import NextAuth from 'next-auth/next'
+import NextAuth, { JWT, Session } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import User from '../../../models/User'
 import db from '../../../utils/db'

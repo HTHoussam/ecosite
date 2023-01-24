@@ -69,26 +69,34 @@ const OrderHistoryPage = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{orders?.map((order) => (
-									<tr key={order._id} className='border-b'>
-										<td className='p-5'>{order._id.substring(20, 24)}</td>
-										<td className='p-5'>{order.createdAt.substring(0, 10)}</td>
-										<td className='p-5'>{order.totalPrice}</td>
-										<td className='p-5'>
-											{order.isPaid
-												? `${order.paidAt.substring(0, 10)}`
-												: 'notpaid'}
-										</td>
-										<td className='p-5'>
-											{order.isDelivered
-												? `${order.deliveredAt.substring(0, 10)}`
-												: 'not delivered'}
-										</td>
-										<td className='p-5'>
-											<Link href={`/order/${order._id}`}>Details</Link>
-										</td>
-									</tr>
-								))}
+								{orders.length === 0 ? (
+									<>
+										No orders yet go <Link href='/'>Shopping</Link>
+									</>
+								) : (
+									orders.map((order) => (
+										<tr key={order._id} className='border-b'>
+											<td className='p-5'>{order._id.substring(20, 24)}</td>
+											<td className='p-5'>
+												{order.createdAt.substring(0, 10)}
+											</td>
+											<td className='p-5'>{order.totalPrice}</td>
+											<td className='p-5'>
+												{order.isPaid
+													? `${order.paidAt.substring(0, 10)}`
+													: 'notpaid'}
+											</td>
+											<td className='p-5'>
+												{order.isDelivered
+													? `${order.deliveredAt.substring(0, 10)}`
+													: 'not delivered'}
+											</td>
+											<td className='p-5'>
+												<Link href={`/order/${order._id}`}>Details</Link>
+											</td>
+										</tr>
+									))
+								)}
 							</tbody>
 						</table>
 					</div>

@@ -121,7 +121,7 @@ const OrderScreen = () => {
 									)
 								})}
 								{!isPaid && (
-									<li>
+									<>
 										{isPending ? (
 											<div>LOADING ...</div>
 										) : (
@@ -134,7 +134,7 @@ const OrderScreen = () => {
 											</div>
 										)}
 										{loadingPay && <div>Loading ...</div>}
-									</li>
+									</>
 								)}
 							</div>
 						</div>

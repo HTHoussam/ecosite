@@ -9,9 +9,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 		return res.status(401).send({ message: 'signin required' })
 	}
 	const { user } = session
-	console.log('user--', user)
 	await db.connect()
-	const orders = await Order.find({ user: user && user.id })
+	const orders = await Order.find({ user: user && user.id }).sort({
+		updatedAt: -1,
+	})
 	await db.disconnect()
 	res.send(orders)
 }

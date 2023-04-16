@@ -1,5 +1,7 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+This project is an ecommerce website using dummy data with functning paypal payment,and authentification (Register + Sign In) system
+
 ## Getting Started
 
 First, run the development server:

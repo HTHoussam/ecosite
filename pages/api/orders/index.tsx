@@ -4,7 +4,7 @@ import Order from '../../../models/Order'
 import db from '../../../utils/db'
 import { getError } from '../../../utils/helpers'
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req:NextApiRequest, res:NextApiResponse) => {
 	const session = await getSession({ req })
 	if (!session) {
 		return res.status(401).send('signin required ')

@@ -21,6 +21,7 @@ const ShippingInput = ({
 				{label}
 			</label>
 			<input
+				autoFocus={false}
 				type={type}
 				className='w-full'
 				id={inputId}
